@@ -94,11 +94,11 @@ def main():
     if mode == '2':
         for idx, (file, duration, size) in enumerate(selected_files, 1):
             print(f"\n[{idx}] {file.name} | 時長: {format_duration(duration)} | 大小: {size:.2f} MB")
-            print("請輸入多個分割點(格式如 30m10s,1h31m52s,...)，輸入 end 結束：")
+            print("請輸入多個分割點(格式如 30m10s,1h31m52s,...)，輸入 e 結束：")
             points = []
             while True:
                 raw = input("-->> ").strip()
-                if raw.lower() == 'end':
+                if raw.lower() == 'e':
                     break
                 try:
                     seconds = parse_duration_string(raw)
@@ -130,7 +130,7 @@ def main():
         log.write(f"開始時間：{start_time.strftime('%Y-%m-%d %H:%M:%S')}\n\n")
 
         for file, settings in segment_settings.items():
-            output_pattern = file.with_name(file.stem + '_cut_%03d' + file.suffix)
+            output_pattern = file.with_name(file.stem + '_%03d' + file.suffix)
             log.write(f"=== {file.name} ===\n")
 
             if len(settings) == 1:
@@ -151,7 +151,7 @@ def main():
             else:
                 prev = 0
                 for idx, point in enumerate(settings + [get_video_info(file)[0]]):
-                    output_file = file.with_name(f"{file.stem}_cut_{idx+1:03d}{file.suffix}")
+                    output_file = file.with_name(f"{file.stem}_{idx+1:03d}{file.suffix}")
                     cmd = [
                         "ffmpeg",
                         "-i", str(file),
